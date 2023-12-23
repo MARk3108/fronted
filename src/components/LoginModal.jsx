@@ -30,10 +30,10 @@ const LoginModal = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Здесь можете отправлять данные на сервер для авторизации
-    console.log('Выбранная станция:', selectedStation);
+    
     console.log('Логин:', username);
     console.log('Пароль:', password);
-    console.log("Роль",user_role )
+   
 
     
   };
@@ -60,12 +60,7 @@ const LoginModal = () => {
         <img src={tileImage} alt="Логотип" className="logo" /> {/* Use the imported image */}
         <h2>Авторизация APM Диспетчера</h2>
         <form onSubmit={handleSubmit}>
-          <select className="input-field" id="stationSelect" value={user_role} onChange={handleStationChange}>
-          <option value="">Выберите роль для авторизации</option>
-          {user_roles.map((user_role, index) => (
-              <option key={index} value={user_role}>{user_role}</option>
-            ))}
-          </select>
+        
           {/* Labels and inputs with their respective classes */}
           <label htmlFor="stationSelect">Станция:</label>
           <select className="input-field" id="stationSelect" value={selectedStation} onChange={handleStationChange}>

@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import "../styles/dragondrop.css"
 import ChooseStation from "./ChooseStation";
 import test from "../assets/State=Default, Transparent=No, Type=Platform Rol full, Color=orange, Sick=No, Status=Default, Delay=No.png"
+import ModalSending from '../components/ModalSending'
  const DragAndDrop = () => {
   const [routes, setRoutes] = useState([
     {
       id: 1,
       title: "Первый путь",
       items: [
-        { id: 1, wagon: 'Электросостав_1',станция: 'Название станции', собственник: 'Собственник', арендатор: 'Арендатор', тип: 'Тип вагона' },
-        { id: 2, wagon: 'Вагон 1',станция: 'Название станции', собственник: 'Собственник', арендатор: 'Арендатор', тип: 'Тип вагона' },
-        { id: 3, wagon: 'Вагон 2',станция: 'Название станции', собственник: 'Собственник', арендатор: 'Арендатор', тип: 'Тип вагона' },
-        { id: 4, wagon: 'Вагон 3',станция: 'Название станции', собственник: 'Собственник', арендатор: 'Арендатор', тип: 'Тип вагона' },
+        { id: 1, wagon: 'Электросостав_1',station: 'Название станции', owner: 'Собственник',  type: 'Тип вагона' },
+        { id: 2, wagon: 'Вагон 1',station: 'Название станции', owner: 'Собственник', type: 'Тип вагона' },
+        { id: 3, wagon: 'Вагон 2',station: 'Название станции', owner: 'Собственник',  type: 'Тип вагона' },
+        { id: 4, wagon: 'Вагон 3',station: 'Название станции', owner: 'Собственник',  type: 'Тип вагона' },
       ],
     },
     {
@@ -122,7 +123,9 @@ import test from "../assets/State=Default, Transparent=No, Type=Platform Rol ful
   const [currentItem,setCurrentItem]=useState(null) //состояние для текущего 
   // Добавьте состояние для отслеживания открытия/закрытия модального окна и информации о вагоне
 const [modalInfo, setModalInfo] = useState(null);
-// Функция для обработки щелчка правой кнопкой мыши на вагоне
+const [modalSendingData,setModalSendingData]= useState(null);
+
+// Функция для открытия модального окна при клики правой кнопки мыши
 function handleRightClick(e, item) {
   e.preventDefault();
   setModalInfo(item); // Устанавливаем информацию о вагоне для отображения в модальном окне
@@ -132,6 +135,19 @@ function handleRightClick(e, item) {
 function closeModal() {
   setModalInfo(null); // Закрываем модальное окно
 }
+
+// Функции для открытия модального окна отправки данных на сервер 
+// function handleSendClick(e, info) {
+//   e.preventDefault();
+//   setModalSending(info); // Устанавливаем информацию о вагоне для модального окна отправки
+// }
+// function closeSendModal() {
+//   setModalSending(null); // Закрываем модальное окно
+// }
+
+
+
+
   // открытие модального окна 
   const openChooseStation = () => {
     setIsChooseStationOpen(true);
@@ -194,6 +210,14 @@ if(e.target.className=="item"){
     
     if (route.items.length < maxItems) {
       route.items.splice(dropIndex + 1, 0, currentItem);
+      // Отображаем модальное окно после перемещения вагона
+      setModalSendingData({
+        stationFrom: currentRoute.title,
+        stationTo: route.title,
+        wagon: currentItem,
+        positionFrom: currentIndex+1,
+        positionTo: dropIndex + 1,
+      }); // Отображаем модальное окно после перемещения вагона
     } else {
       // Возвращаем вагон на прежнее место в текущем маршруте, если места закончились
       currentRoute.items.splice(currentIndex, 0, currentItem);
@@ -254,21 +278,33 @@ if(e.target.className=="item"){
         <button onClick={openChooseStation} className="menu__button" >Сменить станцию</button> 
         <ChooseStation isOpen={isChooseStationOpen} onClose={closeChooseStation} />
       </div>
-{/*  Модальное окно  */}
+{/*  Модальные окна */}
 {modalInfo && (
   <div className="modal">
     <div className="modal-content">
       <span className="close" onClick={closeModal}>&times;</span>
-      <h2>Подробная информация</h2>
+      <h2> информация</h2>
       <p>Название: {modalInfo.wagon}</p>
-      <p>Станция: {modalInfo.станция}</p>
-      <p>Собственник: {modalInfo.собственник}</p>
-      <p>Арендатор: {modalInfo.арендатор}</p>
-      <p>Тип вагона: {modalInfo.тип}</p>
+      <p>Станция: {modalInfo.station}</p>          
+      <p>Собственник: {modalInfo.owner}</p>
+      <p>Тип вагона: {modalInfo.type}</p>
     </div>
   </div>
 )}
-      {routes.map((route) => (
+ {modalSendingData && (
+        <ModalSending
+          showModal={true}
+          closeModal={() => setModalSendingData(null)}
+          selectedRoute={modalSendingData.stationFrom}
+          selectedWagon={modalSendingData.wagon}
+          stationFrom={modalSendingData.stationFrom}
+          stationTo={modalSendingData.stationTo}
+          positionFrom={modalSendingData.positionFrom}
+          positionTo={modalSendingData.positionTo}
+          
+        />
+      )}
+  {routes.map((route) => (
         
         <div className="route" key={route.id}>
           <div className="route_title">{route.title}</div>
@@ -296,9 +332,6 @@ if(e.target.className=="item"){
       ))}
     
         <div className="footer">
-        <button onClick={handleSaveChanges} className="menu_button">
-          Отправить изменения 
-        </button>
       </div>
     </div>
   );
