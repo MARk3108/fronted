@@ -3,6 +3,7 @@ import "../styles/dragondrop.css"
 import ChooseStation from "./ChooseStation";
 import test from "../assets/State=Default, Transparent=No, Type=Platform Rol full, Color=orange, Sick=No, Status=Default, Delay=No.png"
 import ModalSending from '../components/ModalSending'
+import LogcatStory from "./logcat";
  const DragAndDrop = () => {
   const [routes, setRoutes] = useState([
     {
@@ -117,7 +118,8 @@ import ModalSending from '../components/ModalSending'
      
   };
    const [isChooseStationOpen, setIsChooseStationOpen] = useState(false); //молальное окно смены станции
-  const [selectedStation, setSelectedStation] = useState('Ольжерасская'); //отслеживаем в какой станции мы 
+   const [isLogCatOpen, setIsLogCatOpen] = useState(false);
+   const [selectedStation, setSelectedStation] = useState('Ольжерасская'); //отслеживаем в какой станции мы 
   const [searchTerm, setSearchTerm] = useState(''); // состояние для хранения текста поиска // Состояние для текста поиска
   const [currentRoute,setCurrentRoute]=useState(null); //состояние для текущего пути
   const [currentItem,setCurrentItem]=useState(null) //состояние для текущего 
@@ -156,7 +158,12 @@ function closeModal() {
     setIsChooseStationOpen(false);
     setSelectedStation(stationName);
   };
-
+  const openLogCat = () => {
+    setIsLogCatOpen(true);
+  }
+  const closeLogCat = () =>{
+    setIsLogCatOpen(false);
+  }
 
 
 
@@ -275,6 +282,8 @@ if(e.target.className=="item"){
           onChange={handleSearchChange}
           placeholder="Поиск вагона..."
         />
+        <button onClick={openLogCat} className="menu__button">История перемещений</button>
+        <LogcatStory isOpen={isLogCatOpen} onClose={closeLogCat}/>
         <button onClick={openChooseStation} className="menu__button" >Сменить станцию</button> 
         <ChooseStation isOpen={isChooseStationOpen} onClose={closeChooseStation} />
       </div>
