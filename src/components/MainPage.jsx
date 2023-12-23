@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/main_page.css'
+import '../styles/'
 const MainPage = () => {
   // используем navigate для переключение между страницами
   // const navigate=useNavigate()
@@ -65,39 +65,15 @@ const MainPage = () => {
         <div className="header">
           <h1>Модуль номерного учета вагонов</h1>
         </div>
-        <div className="menu"> 
-          <button className="menu__button" >Отслеживание движения поездов</button> 
-        {/* <HowItWork isHowItWorkModalOpen={isHowItWorkOpen} onHowItWorkModalClose={closeHowItWork} /> */}
-         <a  href="#" >Добавить маршрут следования</a>
-          <a href="#" >Личный кабинет</a>
-        </div>
-        <div className="info-block">
-          <h1 className="info-block__header">Найдите свою аудиторию</h1>
-          <p className="info-block__text">Огромный выбор аудиторий для мероприятий всех форматов.<br/>Бронируйте классы, актовые залы и конференц-залы в вашем институте.</p>
-          <div className="info-block-nav">
-            <div className="info-block-nav__item"><p className="info__text">аудиторий</p></div>
-            <div className="info-block-nav__item"><p className="info__text">мероприятий</p></div>
-            <div className="info-block-nav__item"><p className="info__text">учебных заведений</p></div>
-          </div>
-        </div>
         <div className="content">
           <div className="content__text">
             <h2>Добро пожаловать!</h2>
             <p>Здесь вы можете бронировать аудитории в нашем институте для проведения различных мероприятий.</p>
-            {/* {userToken ? ( // Если userToken существует
-                <button className="registration-button" onClick={unLogin}>Выход</button>
-                         ) : ( // Если userToken отсутствует (равен null)
-                           <div>
-                           <button className="registration-button" onClick={openAuth}>Вход</button>
-                           <button className="registration-button" onClick={openRegistration}>Регистрация</button>
-                               <AuthWindow isAuthModalOpen={isAuthOpen} onAuthModalClose={closeAuth} />
-                               <RegistrationModal isRegistrationModalOpen={isRegistrationOpen} onRegistrationModalClose={closeRegistration} />
-                           </div>
-                              )} */}
+           
           </div>
         </div>
         <footer className="footer">
-          <p>&copy; 2023 Модуль номерного учета вагонов</p>
+           <p>&copy; 2023 АРМ дежурного жд станции</p>
         </footer>
       </div>
     );

@@ -4,10 +4,10 @@ import '../styles/choose_station.css'; // Файл стилей для офор�
 
 const ChooseStation = ({ isOpen, onClose }) => {
   const [stations, setStations] = useState([]);
-  const [selectedStation, setSelectedStation] = useState('');
+  const [selectedStation, setSelectedStation] = useState('Ольжерасская');
 
   useEffect(() => {
-    if (isOpen) {
+   
       // Запрос на сервер при открытии модального окна
       axios.get(' ') //вставить url для получения станции 
         .then(response => {
@@ -16,18 +16,18 @@ const ChooseStation = ({ isOpen, onClose }) => {
         .catch(error => {
           console.error('Ошибка при загрузке станций:', error);
         });
-    }
-  }, [isOpen]);
+   
+  },);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // Действия при выборе станции и подтверждении формы
     console.log('Выбранная станция:', selectedStation);
-    onClose();
+    onClose(selectedStation);
   };
-
+  if (!isOpen) return null;
   return (
-    <div className={`modal ${isOpen ? 'open' : ''}`}>
+    <div className={`modal`}>
       <div className="modal-content">
         <span className="close" onClick={onClose}>&times;</span>
         <h2>Выбор станции для диспетчера/администратора</h2>

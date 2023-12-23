@@ -1,0 +1,59 @@
+.train-station {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 20px;
+  background-color: #f9f9f9;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.buttons button {
+  margin-left: 10px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #3498db;
+  color: white;
+  cursor: pointer;
+}
+
+.buttons button:hover {
+  background-color: #2980b9;
+}
+
+.paths {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.path {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.path img {
+  width: 50px;
+  height: 50px;
+  margin-right: 5px;
+}
+
+.locomotive {
+  transform: translateY(-50%);
+}
+
+.wagon {
+  cursor: pointer;
+}
+
+/* Дополнительные стили для взаимодействия с вагонами и путями */
+/* Например, изменение цвета при наведении или анимации */
