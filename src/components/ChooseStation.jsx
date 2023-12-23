@@ -30,8 +30,8 @@ const ChooseStation = ({ isOpen, onClose }) => {
     <div className={`modal`}>
       <div className="modal-content">
         <span className="close" onClick={onClose}>&times;</span>
-        <h2>Выбор станции для диспетчера/администратора</h2>
-        <form onSubmit={handleSubmit}>
+        <h2>Выбор станции для администратора</h2>
+        <form  className="form-choose-station"onSubmit={handleSubmit}>
           <label htmlFor="stationSelect">Выберите станцию:</label>
           <select id="stationSelect" value={selectedStation} onChange={(e) => setSelectedStation(e.target.value)}>
             <option value="">Выберите станцию</option>

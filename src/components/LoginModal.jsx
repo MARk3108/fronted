@@ -53,35 +53,36 @@ const LoginModal = () => {
   return (
     <div className="modal">
       <div className="modal-content">
-      <img src={logo} alt="Логотип" className="logo" />
-      <br/>
-      <br/>
-      <br/>
-      <img src={tileImage} alt="Логотип" className="logo" /> {/* Используйте импортированное изображение */}
+        <img src={logo} alt="Логотип" className="logo" />
+        <br />
+        <br />
+        <br />
+        <img src={tileImage} alt="Логотип" className="logo" /> {/* Use the imported image */}
         <h2>Авторизация APM Диспетчера</h2>
         <form onSubmit={handleSubmit}>
-        <select id="stationSelect" value={user_role} onChange={handleStationChange}>
+          <select className="input-field" id="stationSelect" value={user_role} onChange={handleStationChange}>
           <option value="">Выберите роль для авторизации</option>
           {user_roles.map((user_role, index) => (
               <option key={index} value={user_role}>{user_role}</option>
             ))}
-            </select>
+          </select>
+          {/* Labels and inputs with their respective classes */}
           <label htmlFor="stationSelect">Станция:</label>
-          <select id="stationSelect" value={selectedStation} onChange={handleStationChange}>
-            <option value="">Выберите станцию</option>
+          <select className="input-field" id="stationSelect" value={selectedStation} onChange={handleStationChange}>
+          <option value="">Выберите станцию</option>
             {stations.map((station, index) => (
               <option key={index} value={station}>{station}</option>
             ))}
           </select>
           <label htmlFor="username">Логин:</label>
-          <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required />
+          <input className="input-field" type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required />
           <label htmlFor="password">Пароль:</label>
-          <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-          <button onClick={handleLogin}  type="submit">Войти</button>
+          <input className="input-field" type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <button className="input-field" onClick={handleLogin} type="submit">Войти</button>
         </form>
       </div>
     </div>
   );
-};
+}
 
 export default LoginModal;

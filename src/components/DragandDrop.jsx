@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import "../styles/dragondrop.css"
 import ChooseStation from "./ChooseStation";
+import test from "../assets/State=Default, Transparent=No, Type=Platform Rol full, Color=orange, Sick=No, Status=Default, Delay=No.png"
  const DragAndDrop = () => {
   const [routes, setRoutes] = useState([
     {
       id: 1,
       title: "Первый путь",
       items: [
-        { id: 1, wagon: 'Электросостав_1' },
-        { id: 2, wagon: 'Вагон 1' },
-        { id: 3, wagon: 'Вагон 2' },
-        { id: 4, wagon: 'Вагон 3' },
+        { id: 1, wagon: 'Электросостав_1',станция: 'Название станции', собственник: 'Собственник', арендатор: 'Арендатор', тип: 'Тип вагона' },
+        { id: 2, wagon: 'Вагон 1',станция: 'Название станции', собственник: 'Собственник', арендатор: 'Арендатор', тип: 'Тип вагона' },
+        { id: 3, wagon: 'Вагон 2',станция: 'Название станции', собственник: 'Собственник', арендатор: 'Арендатор', тип: 'Тип вагона' },
+        { id: 4, wagon: 'Вагон 3',станция: 'Название станции', собственник: 'Собственник', арендатор: 'Арендатор', тип: 'Тип вагона' },
       ],
     },
     {
@@ -106,11 +107,31 @@ import ChooseStation from "./ChooseStation";
     },
    
   ]);
+  
+  //определенное колличество мест на маршруте 
+  const maxItemsPerRoute = {
+    1: 100,
+    2: 6,
+    3: 4,
+     
+  };
    const [isChooseStationOpen, setIsChooseStationOpen] = useState(false); //молальное окно смены станции
   const [selectedStation, setSelectedStation] = useState('Ольжерасская'); //отслеживаем в какой станции мы 
   const [searchTerm, setSearchTerm] = useState(''); // состояние для хранения текста поиска // Состояние для текста поиска
-  const [currentRoute,setCurrentRoute]=useState(null);
-  const [currentItem,setCurrentItem]=useState(null)
+  const [currentRoute,setCurrentRoute]=useState(null); //состояние для текущего пути
+  const [currentItem,setCurrentItem]=useState(null) //состояние для текущего 
+  // Добавьте состояние для отслеживания открытия/закрытия модального окна и информации о вагоне
+const [modalInfo, setModalInfo] = useState(null);
+// Функция для обработки щелчка правой кнопкой мыши на вагоне
+function handleRightClick(e, item) {
+  e.preventDefault();
+  setModalInfo(item); // Устанавливаем информацию о вагоне для отображения в модальном окне
+}
+
+// Функция для закрытия модального окна
+function closeModal() {
+  setModalInfo(null); // Закрываем модальное окно
+}
   // открытие модального окна 
   const openChooseStation = () => {
     setIsChooseStationOpen(true);
@@ -162,26 +183,60 @@ if(e.target.className=="item"){
     setCurrentItem(item)
   }
 
-  function dropHandler(e,route,item){
-    e.preventDefault()
-    const currentIndex=currentRoute.items.indexOf(currentItem)
-    currentRoute.items.splice(currentIndex,1)
-    const dropIndex=route.items.indexOf(item)
-    route.items.splice(dropIndex-1,0,currentItem)
-    setRoutes(routes.map(r=>{
-      if(r.id===route.id){
-      return route
+  function dropHandler(e, route, item) {
+    e.preventDefault();
+  
+    const maxItems = maxItemsPerRoute[route.id];
+    const currentIndex = currentRoute.items.indexOf(currentItem);
+    currentRoute.items.splice(currentIndex, 1);
+  
+    const dropIndex = route.items.indexOf(item);
+    
+    if (route.items.length < maxItems) {
+      route.items.splice(dropIndex + 1, 0, currentItem);
+    } else {
+      // Возвращаем вагон на прежнее место в текущем маршруте, если места закончились
+      currentRoute.items.splice(currentIndex, 0, currentItem);
+      alert('Места на маршруте закончились');
+    }
+  
+    setRoutes(routes.map((r) => (r.id === route.id ? route : r)));
+  }
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [ctrlPressed, setCtrlPressed] = useState(false);
+
+  function handleMouseDown(item, e) {
+    if (!ctrlPressed) {
+      setSelectedItems([item]);
+    } else {
+      if (selectedItems.includes(item)) {
+        setSelectedItems(selectedItems.filter((selectedItem) => selectedItem !== item));
+      } else {
+        setSelectedItems([...selectedItems, item]);
       }
-      if(r.id===currentRoute.id){
-        return currentRoute
-      }
-      return r
-    }))
+    }
   }
 
-  function dragEndHandler(e){
-    e.target.style.boxShadow = 'none'
+  function handleKeyDown(e) {
+    if (e.key === 'Control') {
+      setCtrlPressed(true);
+    }
   }
+
+  function handleKeyUp(e) {
+    if (e.key === 'Control') {
+      setCtrlPressed(false);
+    }
+  }
+  // Добавьте обработчики событий на окне для отслеживания нажатия/отпускания клавиши Ctrl
+  React.useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);
 
   return (
     <div className="container-main-page">
@@ -199,13 +254,29 @@ if(e.target.className=="item"){
         <button onClick={openChooseStation} className="menu__button" >Сменить станцию</button> 
         <ChooseStation isOpen={isChooseStationOpen} onClose={closeChooseStation} />
       </div>
+{/*  Модальное окно  */}
+{modalInfo && (
+  <div className="modal">
+    <div className="modal-content">
+      <span className="close" onClick={closeModal}>&times;</span>
+      <h2>Подробная информация</h2>
+      <p>Название: {modalInfo.wagon}</p>
+      <p>Станция: {modalInfo.станция}</p>
+      <p>Собственник: {modalInfo.собственник}</p>
+      <p>Арендатор: {modalInfo.арендатор}</p>
+      <p>Тип вагона: {modalInfo.тип}</p>
+    </div>
+  </div>
+)}
       {routes.map((route) => (
+        
         <div className="route" key={route.id}>
           <div className="route_title">{route.title}</div>
           {route.items.map((item) => (
             <div
               className="item"
               
+              onContextMenu={(e) => handleRightClick(e, item)} // Обработчик для правой кнопки мыши
               // Добавляем класс "highlight", если вагон содержит текст поиска
               onDragOver={(e) => dragOverHandler(e)}
               onDragLeave={(e) => dragLeaveHandler(e)}
@@ -214,8 +285,11 @@ if(e.target.className=="item"){
               onDrop={(e) => dropHandler(e, route, item)}
               draggable={true}
               key={item.id}
+              
             >
-              {item.wagon}
+              <img src={test} alt={item.wagon} />
+              <span className="text-over">{item.wagon}</span>
+             
             </div>
           ))}
         </div>
@@ -223,7 +297,7 @@ if(e.target.className=="item"){
     
         <div className="footer">
         <button onClick={handleSaveChanges} className="menu_button">
-          Сохранить изменения
+          Отправить изменения 
         </button>
       </div>
     </div>

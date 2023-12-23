@@ -5,7 +5,7 @@
 
 .menu {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   margin-top: 20px;
 }
 
@@ -57,6 +57,8 @@ button:hover {
 }
 
 .route {
+  overflow-x: auto; /* Прокрутка по горизонтали при необходимости */
+  max-width: 100%; /* Позволяет контейнеру масштабироваться до максимальной ширины */
   display: flex;
   flex-direction: row;
   justify-content: space-between; 
@@ -78,18 +80,23 @@ button:hover {
 }
 
 .item {
+  
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #ffa500;
+  white-space: nowrap;
   padding: 10px;
   border-radius: 6px;
   margin: 10px 20px;
   cursor: grab;
-  background-color: #fcfcf9;
-  width: 100%; /* Чтобы элементы занимали всю ширину контейнера */
+  
+  width: 100%/* Чтобы элементы занимали всю ширину контейнера */
 }
 
+
+.text-over{
+  padding-left: 10px;
+}
 .station-header {
   display: flex;
   justify-content: space-between;
@@ -114,9 +121,11 @@ button:hover {
   font-size: 16px;
   border: 2px solid #ffa500; /* Цвет рамки */
   outline: none; /* Убираем стандартный фокус */
+  width: 300px;
 }
 
 .input-search:focus {
   /* Опциональные стили для фокуса (если требуется) */
   box-shadow: 0 0 5px #ffa500;
 }
+
