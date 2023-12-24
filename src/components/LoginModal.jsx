@@ -4,51 +4,52 @@ import tileImage from '../assets/tile.png'; // Импорт изображени
 import logo from "../assets/Logo (1).svg"
 import LoginServices from '../services/login'
 import { useNavigate } from 'react-router-dom';
-const stations = [
-  'Станция 1',
-  'Станция 2',
-  // Добавьте другие станции
-];
-const user_roles = [
-  'Администратор',
-  'Обычный пользователь',
-  // Добавьте другие станции
-];
+import axios from 'axios';
+
+
 
 const LoginModal = () => {
   const  navigate=useNavigate(); //хук для перенаправления пользователя на новую страницу 
-  const [selectedStation, setSelectedStation] = useState(''); //храним выбранную станцию 
-  const [username, setUsername] = useState(''); //храним имя 
+ 
+  const [email, setUserEmail] = useState(''); //храним имя 
   const [password, setPassword] = useState('');//храним пароль 
-  const[user_role,setUserRole]=useState('');//храним выбраную роль 
-
+ 
   const handleStationChange = (event) => {
-    setSelectedStation(event.target.value);
-    setUserRole(event.target.value);
+    setUserEmail(event.target.value);
+    setPassword(event.target.value);
   };
+ 
+
+ 
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // Здесь можете отправлять данные на сервер для авторизации
     
-    console.log('Логин:', username);
+    console.log('Логин:', email);
     console.log('Пароль:', password);
    
 
     
   };
-  const handleLogin = async () => {
-    try {
-      // вызываем метод login  куда передаем login password и university 
-      // eslint-disable-next-line no-unused-vars
-      const token = await LoginServices.login(selectedStation, username,password);
-      // console.log('Авторизация прошла успешно. Токен:', token);
-      // перенаправляем пользователя на нужную страницу если все успешно 
-     navigate('/profil'); 
-    } catch (error) {
-      console.error('Ошибка авторизации:', error.message);
-    }
-  };
+ const handleLogin = async () => {
+  try {
+    // Вызываем метод login, который возвращает объект с токенами
+    const { access: accessToken } = await LoginServices.login(email, password);
+
+    const response = await axios.get(`http://213.171.4.235:8082/api/users/me`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+    console.log("data:", response.data);
+    
+    // Если все успешно, перенаправляем пользователя на нужную страницу
+    navigate('/DragAndDrop'); 
+  } catch (error) {
+    console.error('Ошибка авторизации:', error.message);
+  }
+};
 
   return (
     <div className="modal">
@@ -62,15 +63,9 @@ const LoginModal = () => {
         <form onSubmit={handleSubmit}>
         
           {/* Labels and inputs with their respective classes */}
-          <label htmlFor="stationSelect">Станция:</label>
-          <select className="input-field" id="stationSelect" value={selectedStation} onChange={handleStationChange}>
-          <option value="">Выберите станцию</option>
-            {stations.map((station, index) => (
-              <option key={index} value={station}>{station}</option>
-            ))}
-          </select>
-          <label htmlFor="username">Логин:</label>
-          <input className="input-field" type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required />
+          
+          <label htmlFor="username">Введите свою почту:</label>
+          <input className="input-field" type="text" id="username" value={email} onChange={(e) => setUserEmail(e.target.value)} required />
           <label htmlFor="password">Пароль:</label>
           <input className="input-field" type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           <button className="input-field" onClick={handleLogin} type="submit">Войти</button>

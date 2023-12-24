@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import '../styles/'
-const MainPage = () => {
+// import React, { useState } from 'react';
+// import '../styles/'
+// const MainPage = () => {
   // используем navigate для переключение между страницами
   // const navigate=useNavigate()
     //создается состояние с помощью useState 
@@ -60,22 +60,22 @@ const MainPage = () => {
   //               //Обновляем страницу для отображения кнопок вход и регистрация
   //               window.location.reload();
   //       }
-    return (
-      <div className="container-main-page">  
-        <div className="header">
-          <h1>Модуль номерного учета вагонов</h1>
-        </div>
-        <div className="content">
-          <div className="content__text">
-            <h2>Добро пожаловать!</h2>
-            <p>Здесь вы можете бронировать аудитории в нашем институте для проведения различных мероприятий.</p>
+  //   return (
+  //     <div className="container-main-page">  
+  //       <div className="header">
+  //         <h1>Модуль номерного учета вагонов</h1>
+  //       </div>
+  //       <div className="content">
+  //         <div className="content__text">
+  //           <h2>Добро пожаловать!</h2>
+  //           <p>Здесь вы можете бронировать аудитории в нашем институте для проведения различных мероприятий.</p>
            
-          </div>
-        </div>
-        <footer className="footer">
-           <p>&copy; 2023 АРМ дежурного жд станции</p>
-        </footer>
-      </div>
-    );
-  };
-  export default MainPage;
+  //         </div>
+  //       </div>
+  //       <footer className="footer">
+  //          <p>&copy; 2023 АРМ дежурного жд станции</p>
+  //       </footer>
+  //     </div>
+  //   );
+  // };
+  // export default MainPage;
